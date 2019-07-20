@@ -1,4 +1,6 @@
 require 'set'
+require 'active_support/inflector'
+
 module DisavowTool
   class List
 
@@ -14,7 +16,9 @@ module DisavowTool
 
     def import(import_files)
       import_files = [import_files] if import_files.class != Array
+
       import_files.each do |file|
+        puts "Importing file: #{file}"
         File.readlines(file).each do |line|
           line.chomp!
           unmodified_line = line

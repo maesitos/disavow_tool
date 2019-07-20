@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'active_support/inflector'
 require 'colorize'
 require 'io/console'
 require_relative 'disavow_tool/config'
