@@ -9,25 +9,25 @@ require_relative 'disavow_tool/white_list.rb'
 require_relative 'disavow_tool/imported_links.rb'
 
 module DisavowTool
-
-  puts "Importing new links".blue if Parameters::OPTIONS[:verbose]
+  p OPTIONS
+  puts "Importing new links".blue if OPTIONS.verbose
   imported_links = ImportedLinks.new
 
-  puts "Importing Disavowed links".blue if Parameters::OPTIONS[:verbose]
+  puts "Importing Disavowed links".blue if OPTIONS.verbose
   disavowed = DisavowList.new
 
-  if Parameters::OPTIONS[:whitelist]
-    puts "Importing Whitelist links".blue if Parameters::OPTIONS[:verbose]
+  if OPTIONS.whitelist
+    puts "Importing Whitelist links".blue if OPTIONS.verbose
     white_list = WhiteList.new
-    puts "Cleagning links already in whitelist".blue if Parameters::OPTIONS[:verbose]
+    puts "Cleagning links already in whitelist".blue if OPTIONS.verbose
     imported_links.remove_known_links(white_list)
   end
 
 
-  puts "Cleagning links already in Disavow".blue if Parameters::OPTIONS[:verbose]
+  puts "Cleagning links already in Disavow".blue if OPTIONS.verbose
   imported_links.remove_known_links(disavowed.links)
 
-  puts "Cleagning links with a domain existingin in Disavow".blue if Parameters::OPTIONS[:verbose]
+  puts "Cleagning links with a domain existingin in Disavow".blue if OPTIONS.verbose
   imported_links.remove_known_links_for_domain(disavowed.domains)
 
   imported_links.sumary

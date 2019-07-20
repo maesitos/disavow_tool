@@ -3,12 +3,7 @@ module DisavowTool
   class ImportedLinks < List
 
     def initialize(import_file=nil)
-      if Parameters::OPTIONS[:whitelist]
-        import_files = import_file || ARGV.slice(2,ARGV.size)
-      else
-       import_files = import_file || ARGV.slice(1,ARGV.size)
-      end
-      super(import_files)
+      super(OPTIONS.import_files)
     end
 
     def remove_known_links(known_links)

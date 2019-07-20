@@ -7,23 +7,23 @@ module DisavowTool
     def new; raise 'abstract!' end
     def clean_line!; raise "SubclassResponsibility" ; end
 
-    def initialize(import_file)
+    def initialize(import_files)
       @list = Set.new
-      @verbose = Parameters::OPTIONS[:verbose]
-      import import_file
+      @verbose = OPTIONS.verbose
+      @verbose_hard = OPTIONS.hardcore_verbose
+      import import_files if @verbose
       @original_list = @list.clone
     end
 
     def import(import_files)
       import_files = [import_files] if import_files.class != Array
-
       import_files.each do |file|
         puts "Importing file: #{file}"
         File.readlines(file).each do |line|
           line.chomp!
           unmodified_line = line
           clean_line!(line)
-          puts import_message(unmodified_line).light_blue if @verbose
+          puts import_message(unmodified_line).light_blue if @verbose_hard
           @list.add line
         end
       end
@@ -64,7 +64,7 @@ module DisavowTool
     def delete_urls_if_domains(domains)
       domains = [domains] if domains.class != Set
       domains.each do |domain|
-        puts "Analysing #{domain}" if Parameters::OPTIONS[:hardcore_verbose]
+        puts "Analysing #{domain}" if OPTIONS.hardcore_verbose
         self.each do |link|
           if link.match(/.+#{Regexp.escape(domain)}.+/)
             self.delete_url(link)

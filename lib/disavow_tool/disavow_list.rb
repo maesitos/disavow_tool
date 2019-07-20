@@ -8,7 +8,7 @@ module DisavowTool
     alias_method :domains, :disavowed_domains
 
     def initialize(import_file=nil)
-      import_file = import_file || ARGV[0]
+      import_file = import_file || OPTIONS.disavow_file
       @disavowed_domains = Set.new
       @disavowed_links = Set.new
       super(import_file)

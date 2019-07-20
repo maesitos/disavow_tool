@@ -1,10 +1,10 @@
 require_relative 'list'
 module DisavowTool
   class WhiteList < List
-    def initialize(import_file=nil)
-      raise "No whitelist option given" unless ::Disavow::Parameters::OPTIONS[:whitelist]
-      import_file = import_file || ARGV[1]
-      super(import_file)
+    def initialize(import_files=nil)
+      raise "No whitelist option given" unless OPTIONS.whitelist
+      import_files = import_files || OPTIONS.whitelist_files
+      super(import_files)
     end
 
     def add_url_message(url)
