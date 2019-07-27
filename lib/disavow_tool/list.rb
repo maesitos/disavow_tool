@@ -1,6 +1,6 @@
 require 'set'
 require 'active_support/inflector'
-
+require 'active_support/core_ext/object'
 module DisavowTool
   class List
 
@@ -27,15 +27,22 @@ module DisavowTool
           @list.add line
         end
       end
+      self.try(:finished_import_hook)
     end
 
     def add_domain(domain, list=nil)
-      add_url(domain,list)
+      list = list || @list
+      if list.add? domain
+        color_domain = domain.on_yellow
+        puts add_url_message(color_domain).blue if @verbose
+      else
+        puts "Not adding #{domain}. Already in the list.".red if @verbose
+      end
     end
 
     def add_url(url, list=nil)
       list = list || @list
-      if @list.add? url
+      if list.add? url
         color_url = url.on_yellow
         puts add_url_message(color_url).blue if @verbose
       else
@@ -53,16 +60,18 @@ module DisavowTool
     end
 
     def mass_delete_urls(urls_to_delete)
-      puts mass_delete_message
+      puts mass_delete_message if @verbose_hard
       urls_to_delete.each do |link|
         color_link = link.on_yellow
-        puts delete_url_message(color_link).red if @verbose
+        puts delete_url_message(color_link).red if @verbose_hard
       end
       @list = @list - urls_to_delete
+      puts "Deleted #{@list.count} elements.".blue if @verbose
     end
 
     def delete_urls_if_domains(domains)
       domains = [domains] if domains.class != Set
+      init_count = self.count
       domains.each do |domain|
         puts "Analysing #{domain}" if OPTIONS.hardcore_verbose
         self.each do |link|
@@ -71,11 +80,23 @@ module DisavowTool
           end
         end
       end
+      puts "Deleted #{init_count - self.count} elements.".blue if @verbose
     end
 
-    def sumary
-      puts "#{mensaje_sumary_importados} #{@original_list.count}".blue
-      puts "#{mensaje_sumary_restantes} #{@list.count}".blue
+    def summary(list=nil, original_list=nil)
+      list = list || @list
+      original_list = original_list || @original_list
+      puts "#{message_sumary_imported} #{original_list.count}".blue
+      puts "#{mensaje_sumary_before_export} #{list.count}".blue
+
+      total_imported = list - original_list
+      if( total_imported.count > 0 && @verbose_hard ) # It's a list with new links
+        puts "Showing the #{total_imported.count} imported elements:".blue
+        (total_imported).each_with_index do |line, i|
+          puts "#{i+1}. #{line.light_blue}"
+        end
+      end
+
     end
 
     def restore
@@ -87,17 +108,12 @@ module DisavowTool
       file_name = self.class.to_s.underscore + "_" + now
       export_file = export_file || EXPORT_PATH + file_name
       file = File.new(export_file, "w")
-      file.puts "# Export #{self.class.to_s.underscore} #{ now }"
+      file.puts "# Exporting #{self.class.to_s.underscore} #{ now }"
       export_write(file)
       file.close
       if @verbose
-        puts "Exported #{file_name} in #{EXPORT_PATH}".blue
+        puts "Exported #{file_name} in #{EXPORT_PATH}".red
       end
-    end
-
-    def export_write(file)
-      file.puts "# Whitelist"
-      file.puts self.to_a
     end
 
     def each
@@ -108,6 +124,10 @@ module DisavowTool
 
     def to_a
       @list.to_a
+    end
+
+    def count
+      @list.count
     end
 
   end

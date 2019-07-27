@@ -23,17 +23,23 @@ module DisavowTool
       end
     end
 
+    def finished_import_hook
+      @original_disavowed_domains = @disavowed_domains.clone
+      @original_disavowed_links = @disavowed_links.clone
+    end
+
     def add_domain(domain)
       super(domain, @disavowed_domains)
     end
 
-    def add_url(domain, list=nil)
-      super(domain, @disavowed_url)
+    def add_url(url, list=nil)
+      super(url, @disavowed_links)
     end
 
     def add_domain_from_url(url)
       domain = URI.parse(URI.escape(url)).host
       add_domain(domain)
+      p domain
       return domain
     end
 
@@ -43,12 +49,24 @@ module DisavowTool
     def add_url_message(url)
       "+++ Inserting #{is_url?(url).to_s} #{url} in Disavow"
     end
+    def message_sumary_imported; "Disavowed elements imported" end
+    def mensaje_sumary_before_export; "Disavow elements before exporting" end
+
+    def summary
+      puts "Disavowed URLs:".blue
+      super(@disavowed_links, @original_disavowed_links)
+      puts "Disavowed Domains:".blue
+      super(@disavowed_domains, @original_disavowed_domains)
+    end
 
     def export_write(file)
       file.puts "# Domains"
       file.puts @disavowed_domains.to_a
+      puts "Writing #{@disavowed_domains.count} Disavowed domains".blue if @verbose
       file.puts "# urls"
       file.puts @disavowed_links.to_a
+      puts "Writing #{@disavowed_links.count} Disavowed URLS".blue if @verbose
+
     end
 
     :private

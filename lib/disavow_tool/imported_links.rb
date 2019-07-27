@@ -45,8 +45,8 @@ module DisavowTool
     def import_message(link)
       "Importing #{link} into Imported links"
     end
-    def mensaje_sumary_importados; "Enlaces nuevos importados" end
-    def mensaje_sumary_restantes; "Enlaces Pendientes de analizar" end
+    def message_sumary_imported; "New links imported" end
+    def mensaje_sumary_before_export; "Links pending to analyse" end
 
     :protected
     def clean_line!(link)

@@ -30,10 +30,14 @@ module DisavowTool
   puts "Cleagning links with a domain existingin in Disavow".blue if OPTIONS.verbose
   imported_links.remove_known_links_for_domain(disavowed.domains)
 
-  imported_links.sumary
+  imported_links.summary
 
   imported_links.analyse(disavowed, white_list)
 
+  disavowed.summary if OPTIONS.verbose
+  white_list.summary if OPTIONS.verbose
+
+  puts "Exporting...".red if OPTIONS.verbose
   disavowed.export
   white_list.export
   # # We'll only analyse links that are not in

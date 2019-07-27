@@ -18,6 +18,14 @@ module DisavowTool
     def import_message(link)
       "Importing #{link} into White list"
     end
+    def message_sumary_imported; "Whitelist links imported" end
+    def mensaje_sumary_before_export; "Whitelist before exporting" end
+
+    def export_write(file)
+      file.puts "# Whitelist"
+      file.puts self.to_a
+      puts "Writing #{self.to_a.count} White links".blue if @verbose
+    end
 
     private :restore
     :protected
