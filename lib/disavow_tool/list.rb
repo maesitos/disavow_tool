@@ -89,9 +89,9 @@ module DisavowTool
       puts "#{message_sumary_imported} #{original_list.count}".blue
       puts "#{mensaje_sumary_before_export} #{list.count}".blue
 
-      total_imported = list - original_list
-      puts "Total elements found after analysis: #{total_imported.count}" if @verbose
-      if @verbose_hard
+      if @verbose
+        total_imported = list - original_list
+        puts "Total elements found after analysis: #{total_imported.count}".blue
         if( total_imported.count > 0) # It's a list with new links
           puts "Showing the #{total_imported.count} imported elements:".blue
           (total_imported).each_with_index do |line, i|

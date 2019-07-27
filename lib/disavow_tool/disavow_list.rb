@@ -53,9 +53,9 @@ module DisavowTool
     def mensaje_sumary_before_export; "Disavow elements before exporting" end
 
     def summary
-      puts "Disavowed URLs:".blue
+      puts "Disavowed URLs:".light_blue
       super(@disavowed_links, @original_disavowed_links)
-      puts "Disavowed Domains:".blue
+      puts "Disavowed Domains:".light_blue
       super(@disavowed_domains, @original_disavowed_domains)
     end
 
