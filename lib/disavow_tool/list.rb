@@ -60,10 +60,10 @@ module DisavowTool
     end
 
     def mass_delete_urls(urls_to_delete)
-      puts mass_delete_message if @verbose_hard
+      puts mass_delete_message if @verbose
       urls_to_delete.each do |link|
         color_link = link.on_yellow
-        puts delete_url_message(color_link).red if @verbose_hard
+        puts delete_url_message(color_link).red if @verbose
       end
       @list = @list - urls_to_delete
       puts "Deleted #{@list.count} elements.".blue if @verbose
@@ -76,7 +76,7 @@ module DisavowTool
         puts "Analysing #{domain}" if OPTIONS.hardcore_verbose
         self.each do |link|
           if link.match(/.+#{Regexp.escape(domain)}.+/)
-            self.delete_url(link, verbose:false)
+            self.delete_url(link, verbose:true)
           end
         end
       end
@@ -90,10 +90,13 @@ module DisavowTool
       puts "#{mensaje_sumary_before_export} #{list.count}".blue
 
       total_imported = list - original_list
-      if( total_imported.count > 0 && @verbose_hard ) # It's a list with new links
-        puts "Showing the #{total_imported.count} imported elements:".blue
-        (total_imported).each_with_index do |line, i|
-          puts "#{i+1}. #{line.light_blue}"
+      puts "Total elements found after analysis: #{total_imported.count}" if @verbose
+      if @verbose_hard
+        if( total_imported.count > 0) # It's a list with new links
+          puts "Showing the #{total_imported.count} imported elements:".blue
+          (total_imported).each_with_index do |line, i|
+            puts "#{i+1}. #{line.light_blue}"
+          end
         end
       end
 

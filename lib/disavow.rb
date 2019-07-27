@@ -19,15 +19,15 @@ module DisavowTool
   if OPTIONS.whitelist
     puts "Importing Whitelist links".blue if OPTIONS.verbose
     white_list = WhiteList.new
-    puts "Cleagning links already in whitelist".blue if OPTIONS.verbose
+    puts "Cleagning imported links already in whitelist".blue if OPTIONS.verbose
     imported_links.remove_known_links(white_list)
   end
 
 
-  puts "Cleagning links already in Disavow".blue if OPTIONS.verbose
+  puts "Cleagning imported links already in Disavow".blue if OPTIONS.verbose
   imported_links.remove_known_links(disavowed.links)
 
-  puts "Cleagning links with a domain existingin in Disavow".blue if OPTIONS.verbose
+  puts "Cleagning imported links with a domain existingin in Disavow".blue if OPTIONS.verbose
   imported_links.remove_known_links_for_domain(disavowed.domains)
 
   imported_links.summary
