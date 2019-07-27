@@ -50,12 +50,12 @@ module DisavowTool
       end
     end
 
-    def delete_url(url)
+    def delete_url(url, options={verbose:true})
       if @list.delete? url
         color_url = url.on_yellow
-        puts delete_url_message(color_url).red if @verbose
+        puts delete_url_message(color_url).red if (@verbose && options[:verbose])
       else
-        puts "Not removing #{url}. It wasn't on the list.".red if @verbose
+        puts "Not removing #{url}. It wasn't on the list.".red if (@verbose && options[:verbose])
       end
     end
 
@@ -76,7 +76,7 @@ module DisavowTool
         puts "Analysing #{domain}" if OPTIONS.hardcore_verbose
         self.each do |link|
           if link.match(/.+#{Regexp.escape(domain)}.+/)
-            self.delete_url(link)
+            self.delete_url(link, verbose:false)
           end
         end
       end
