@@ -5,19 +5,19 @@ require "disavow_tool/version"
 Gem::Specification.new do |spec|
   spec.name          = "disavow_tool"
   spec.version       = DisavowTool::VERSION
-  spec.authors       = ["Guillermo"]
-  spec.email         = ["maesitos@gmail.com"]
+  spec.authors       = ["Maesitos"]
+  spec.email         = ["noreply@example.com"]
 
   spec.summary       = %q{ A simple tool to create Disavow tool }
   spec.description   = %q{ A simple tool to create Disavow tool }
-  spec.homepage      = "https://test.com"
+  spec.homepage      = "https://github.com/maesitos/disavow_tool"
   spec.license       = "MIT"
 
-  spec.metadata["allowed_push_host"] = "http://mygemserver.com"
+  spec.metadata["allowed_push_host"] = "https://rubygems.org"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://test.com"
-  spec.metadata["changelog_uri"] = "https://test.com"
+  spec.metadata["source_code_uri"] = "https://github.com/maesitos/disavow_tool"
+  spec.metadata["changelog_uri"] = "https://github.com/maesitos/disavow_tool"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
