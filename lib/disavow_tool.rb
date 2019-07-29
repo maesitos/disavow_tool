@@ -9,37 +9,40 @@ require_relative 'disavow_tool/white_list.rb'
 require_relative 'disavow_tool/imported_links.rb'
 
 module DisavowTool
-  
-  puts "Importing new links".blue if OPTIONS.verbose
-  imported_links = ImportedLinks.new
 
-  puts "Importing Disavowed links".blue if OPTIONS.verbose
-  disavowed = DisavowList.new
+  def self.run
+    puts "Importing new links".blue if OPTIONS.verbose
+    imported_links = ImportedLinks.new
 
-  if OPTIONS.whitelist
-    puts "Importing Whitelist links".blue if OPTIONS.verbose
-    white_list = WhiteList.new
-    puts "Cleagning imported links already in whitelist".blue if OPTIONS.verbose
-    imported_links.remove_known_links(white_list)
+    puts "Importing Disavowed links".blue if OPTIONS.verbose
+    disavowed = DisavowList.new
+
+    if OPTIONS.whitelist
+      puts "Importing Whitelist links".blue if OPTIONS.verbose
+      white_list = WhiteList.new
+      puts "Cleagning imported links already in whitelist".blue if OPTIONS.verbose
+      imported_links.remove_known_links(white_list)
+    end
+
+
+    puts "Cleagning imported links already in Disavow".blue if OPTIONS.verbose
+    imported_links.remove_known_links(disavowed.links)
+
+    puts "Cleagning imported links with a domain existingin in Disavow".blue if OPTIONS.verbose
+    imported_links.remove_known_links_for_domain(disavowed.domains)
+
+    imported_links.summary
+
+    imported_links.analyse(disavowed, white_list)
+
+    disavowed.summary if OPTIONS.verbose
+    white_list.summary if OPTIONS.verbose
+
+    puts "Exporting...".red if OPTIONS.verbose
+    disavowed.export
+    white_list.export if OPTIONS.whitelist
   end
 
-
-  puts "Cleagning imported links already in Disavow".blue if OPTIONS.verbose
-  imported_links.remove_known_links(disavowed.links)
-
-  puts "Cleagning imported links with a domain existingin in Disavow".blue if OPTIONS.verbose
-  imported_links.remove_known_links_for_domain(disavowed.domains)
-
-  imported_links.summary
-
-  imported_links.analyse(disavowed, white_list)
-
-  disavowed.summary if OPTIONS.verbose
-  white_list.summary if OPTIONS.verbose
-
-  puts "Exporting...".red if OPTIONS.verbose
-  disavowed.export
-  white_list.export if OPTIONS.whitelist
   # # We'll only analyse links that are not in
   # # the Whitelist nor at Disavowed
   # knwon_links = (@disavowed_links + @whitelisted_links).uniq
