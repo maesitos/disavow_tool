@@ -39,7 +39,7 @@ module DisavowTool
 
   puts "Exporting...".red if OPTIONS.verbose
   disavowed.export
-  white_list.export
+  white_list.export if OPTIONS.whitelist
   # # We'll only analyse links that are not in
   # # the Whitelist nor at Disavowed
   # knwon_links = (@disavowed_links + @whitelisted_links).uniq
