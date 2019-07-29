@@ -1,6 +1,8 @@
 #!/usr/bin/ruby
 require 'colorize'
 require 'io/console'
+require 'active_support/inflector'
+require 'active_support/core_ext/object'
 require_relative 'disavow_tool/config'
 require_relative 'disavow_tool/version'
 require_relative 'disavow_tool/command_options.rb'

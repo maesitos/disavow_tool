@@ -1,6 +1,5 @@
 require 'set'
-require 'active_support/inflector'
-require 'active_support/core_ext/object'
+
 module DisavowTool
   class List
 
