@@ -79,6 +79,7 @@ module DisavowTool
 
     def website_title(url)
       page = Nokogiri::HTML(open(URI.escape(url)))
+      return "Empty title" if page.css("title")
       page.css("title")[0].text
     end
   end
