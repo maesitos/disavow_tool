@@ -12,7 +12,6 @@ require_relative 'disavow_tool/imported_links.rb'
 
 module DisavowTool
   def self.run
-
     puts "Importing new links".blue if OPTIONS.verbose
     imported_links = ImportedLinks.new
 

@@ -7,11 +7,11 @@ module DisavowTool
     alias_method :links, :disavowed_links
     alias_method :domains, :disavowed_domains
 
-    def initialize(import_file=nil)
-      import_file = import_file || OPTIONS.disavow_file
+    def initialize(import_files=nil)
+      import_files = import_files || OPTIONS.disavow_files
       @disavowed_domains = Set.new
       @disavowed_links = Set.new
-      super(import_file)
+      super(import_files)
     end
 
     def clean_line!(line)

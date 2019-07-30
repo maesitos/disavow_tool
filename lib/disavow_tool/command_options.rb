@@ -18,8 +18,8 @@ module DisavowTool
           opts.banner = "Usage: disavow.rb [options] --disavow FILE --import file_1,file_2,file_3 [--whitelist file1,file2,file3]"
           opts.separator ""
           opts.separator "Requited options:"
-          opts.on("-d","--disavow FILE", "Disavow file as exported from Google Search Console") do |file|
-            options.disavow_file = file
+          opts.on("-d","--disavow file_1,file_2", Array, "Disavow files as exported from Google Search Console") do |file|
+            options.disavow_files = file
           end
           opts.on("-i","--import file_1,file_2", Array, "List of URLS to analyse. The file must have one URL per line") do |file|
             options.import_files = file
@@ -60,7 +60,7 @@ module DisavowTool
     end
 
     def check_arguments(options)
-      raise "You must to specify one disallow file" if options.disavow_file.blank?
+      raise "You must to specify one disallow file" if options.disavow_files.blank?
       raise "You must to specify one import file" if options.import_files.blank?
       if options.whitelist
         raise "You need to specify at least one white list file" if options.whitelist_files.blank?
