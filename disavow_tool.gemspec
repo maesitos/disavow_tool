@@ -36,4 +36,5 @@ Gem::Specification.new do |spec|
   # Dependencies
   spec.add_dependency "colorize"
   spec.add_dependency "activesupport"
+  spec.add_dependency "nokogiri"
 end

@@ -1,4 +1,7 @@
 require_relative 'list'
+require 'nokogiri'
+require 'open-uri'
+
 module DisavowTool
   class ImportedLinks < List
 
@@ -17,7 +20,11 @@ module DisavowTool
     def analyse(disavowed, white_list)
        "Ready to delete analize #{@list.count} remaining links"
        @list.each do |url|
-         puts "#{"*"*100}\n* Analysing url: #{url.on_green}\n#{"*"*100}"
+         puts "#{"*"*100}\n*"
+         puts "* Analysing url: #{url.on_green}"
+         print "* Obtaining website's title...\r"
+         puts "* Website title: #{website_title(url)}".ljust(100)
+         puts "#{"*"*100}\n*"
          display_menu()
          input = $stdin.getch
          input = $stdin.getch if open_browser_option(input, url)
@@ -67,5 +74,9 @@ module DisavowTool
         end
     end
 
+    def website_title(url)
+      page = Nokogiri::HTML( open(url) )
+      page.css("title")[0].text
+    end
   end
 end
