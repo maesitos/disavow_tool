@@ -85,8 +85,10 @@ module DisavowTool
           return "Empty Title" if page.css("title").blank?
           return page.css("title")[0].text
         end
-      rescue Timeout::Error
-        return "Empty Title — Request Time Out"
+      rescue Timeout::Error => e
+        return "Empty Title — Request Time Out: #{e}"
+      rescue OpenURI::HTTPError => e
+        return "Empty Title. HTTP Error: #{e}"
       end
 
     end
