@@ -80,7 +80,7 @@ module DisavowTool
 
     def website_title(url)
       begin
-        Timeout::timeout(5) do
+        Timeout::timeout(SECONDS_TITTLE_REQUEST) do
           page = Nokogiri::HTML(open(URI.escape(url)))
           return "Empty Title" if page.css("title").blank?
           return page.css("title")[0].text
