@@ -89,6 +89,8 @@ module DisavowTool
         return "Empty Title — Request Time Out: #{e}"
       rescue OpenURI::HTTPError => e
         return "Empty Title. HTTP Error: #{e}"
+      rescue SocketError => e
+        return "Empty Title. Can't open site: #{e}"
       end
 
     end
