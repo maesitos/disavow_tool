@@ -25,11 +25,12 @@ module DisavowTool
          print "* Obtaining website's title...\r"
          puts "* Website title: #{website_title(url)}".ljust(100)
          puts "#{"*"*100}\n*"
-         display_menu()
+         puts menu()
          input = $stdin.getch
          input = $stdin.getch if open_browser_option(input, url)
          case input
               when "w"
+                raise "Command run with no whitelist option" if OPTIONS.whitelist == false
                 white_list.add_url url
                 self.delete_url url
               when "d"
@@ -61,8 +62,10 @@ module DisavowTool
     end
 
     :private
-    def display_menu
-      puts "[w] to send to whitelist [d] to send to Disavow as a domain [u] to send to Disavow as a URL [o] to open the URL."
+    def menu
+      message = ""
+      message = "[w] to send to whitelist" if OPTIONS.whitelist
+      message += "[d] to send to Disavow as a domain [u] to send to Disavow as a URL [o] to open the URL."
     end
 
     def open_browser_option(input, link)
