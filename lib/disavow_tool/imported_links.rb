@@ -72,13 +72,13 @@ module DisavowTool
       if input == "o"
           if Gem.win_platform? then system "start chrome #{link}" else system "open -a safari #{link}" end
           puts "Opening #{link}...".blue
-          display_menu
+          puts menu
           return true
         end
     end
 
     def website_title(url)
-      page = Nokogiri::HTML( open(url) )
+      page = Nokogiri::HTML(open(URI.escape(url)))
       page.css("title")[0].text
     end
   end
