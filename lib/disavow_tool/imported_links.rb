@@ -1,6 +1,7 @@
 require_relative 'list'
 require 'nokogiri'
 require 'open-uri'
+require 'timeout'
 
 module DisavowTool
   class ImportedLinks < List
@@ -78,9 +79,17 @@ module DisavowTool
     end
 
     def website_title(url)
-      page = Nokogiri::HTML(open(URI.escape(url)))
-      return "Empty title" if page.css("title")
-      page.css("title")[0].text
+      begin
+        Timeout::timeout(5) do
+          page = Nokogiri::HTML(open(URI.escape(url)))
+          return "Empty Title" if page.css("title").blank?
+          return page.css("title")[0].text
+        end
+      rescue Timeout::Error
+        return "Empty Title — Request Time Out"
+      end
+
     end
+
   end
 end
