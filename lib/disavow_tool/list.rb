@@ -20,6 +20,10 @@ module DisavowTool
         puts "Importing file: #{file}"
         File.readlines(file).each do |line|
           line.chomp!
+          if comment?(line) || line.blank?
+            puts "cleaning comment or empty line: #{line}" if @verbose_hard
+            next
+          end
           unmodified_line = line
           clean_line!(line)
           puts import_message(unmodified_line).light_blue if @verbose_hard
@@ -116,6 +120,10 @@ module DisavowTool
       if @verbose
         puts "Exported #{file_name} in #{EXPORT_PATH}".red
       end
+    end
+
+    def comment?(line)
+      line.match(/^#/) ? true : false
     end
 
     def each
