@@ -49,9 +49,9 @@ module DisavowTool
 		end
 
 		def summary
-			puts message_sumary_links_imported.light_blue
+			puts message_sumary_links_imported.green
 			super(@links, @original_links)
-			puts message_sumary_domains_imported.light_blue
+			puts message_sumary_domains_imported.green
 			super(@domains, @original_domains)
 		end
 
