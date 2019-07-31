@@ -91,6 +91,8 @@ module DisavowTool
         return "Empty Title. HTTP Error: #{e}"
       rescue SocketError => e
         return "Empty Title. Can't open site: #{e}"
+      rescue
+        return "Empty Tittle "
       end
 
     end
