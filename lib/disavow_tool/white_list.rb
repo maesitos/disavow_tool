@@ -6,8 +6,17 @@ module DisavowTool
     def initialize(import_files=nil)
       raise "No whitelist option given" unless OPTIONS.whitelist
       import_files = import_files || OPTIONS.whitelist_files
-      p "Whitelist"
       super(import_files)
+    end
+
+    def  add_urls_with_same_domain_as(url, import_list)
+      domain = URI.parse(URI.escape(url)).host
+      puts "Adding to whitelist all imported urls with the domain #{domain}"
+      import_list.each do |link|
+        add_url(link) if URI.parse(URI.escape(link)).host == domain
+      end
+      puts "Attempting to remove URLs with the domain #{domain} from imported links to stop anaylsing"
+      import_list.delete_urls_if_domains(domain)
     end
 
     def add_url_message(url)

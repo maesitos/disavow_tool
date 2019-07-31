@@ -25,7 +25,8 @@ module DisavowTool
          puts "* Analysing url: #{url.on_green}"
          print "* Obtaining website's title...\r"
          puts "* Website title: #{website_title(url)}".ljust(100)
-         puts "#{"*"*100}\n*"
+         puts "* URls with this same domain: #{urls_with_same_domain(url)}"
+         puts "*\n#{"*"*100}\n*"
          puts menu()
          input = $stdin.getch
          input = $stdin.getch if open_browser_option(input, url)
@@ -40,6 +41,8 @@ module DisavowTool
                 self.delete_url url
                 puts "Attempting to remove URLs with the domain #{domain} from imported links to stop anaylsing"
                 self.delete_urls_if_domains(domain)
+              when "a"
+                white_list.add_urls_with_same_domain_as url, self
               when "d"
                 domain = disavowed.add_domain_from_url(url)
                 self.delete_url url
@@ -71,7 +74,7 @@ module DisavowTool
     :private
     def menu
       message = ""
-      message = "[w] whitelist url [W] whitelist the entire domain\n" if OPTIONS.whitelist
+      message = "[w] Whitelist url [W] Whitelist the entire domain [a] whitelist as url All urls with this domain\n" if OPTIONS.whitelist
       message += "[d] Disavow as domain [u] Disavow as a URL [o] to open the URL."
     end
 
@@ -101,6 +104,15 @@ module DisavowTool
         return "Empty Tittle "
       end
 
+    end
+
+    def urls_with_same_domain(url)
+      domain = URI.parse(URI.escape(url)).host
+      counter = 0
+      self.each do |link|
+        counter += 1 if URI.parse(URI.escape(link)).host == domain
+      end
+      counter
     end
 
   end

@@ -13,11 +13,8 @@ module DisavowTool
 			case domain_or_url(line)
 			when :domain
 				@domains << remove_domain_prefix(line)
-				puts "Line domain #{line} #{self.class}"
-				puts "remove_domain_prefix(line) #{remove_domain_prefix(line)}"
 			when :url
 				@links << line
-				puts "Line url #{line}"
 			end
 		end
 

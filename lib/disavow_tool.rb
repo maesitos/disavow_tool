@@ -11,7 +11,7 @@ require_relative 'disavow_tool/white_list.rb'
 require_relative 'disavow_tool/imported_links.rb'
 
 module DisavowTool
-  p WhiteList.ancestors
+
   def self.run
     puts "Importing new links".blue if OPTIONS.verbose
     imported_links = ImportedLinks.new
