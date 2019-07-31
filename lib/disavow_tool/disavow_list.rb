@@ -6,11 +6,9 @@ module DisavowTool
   class DisavowList < List
     include DomainAndUrl
 
-    def add_domain_from_url(url)
-      domain = URI.parse(URI.escape(url)).host
-      add_domain(domain)
-      p domain
-      return domain
+    def initialize(import_files=nil)
+      import_files = import_files || OPTIONS.disavow_files
+      super(import_files)
     end
 
     def import_message(domain)
@@ -22,12 +20,8 @@ module DisavowTool
     def message_sumary_imported; "Disavowed elements imported" end
     def mensaje_sumary_before_export; "Disavow elements before exporting" end
 
-    def summary
-      puts "Disavowed URLs:".light_blue
-      super(@links, @original_links)
-      puts "Disavowed Domains:".light_blue
-      super(@domains, @original_domains)
-    end
+    def message_sumary_links_imported; "Disavowed URLs:" end
+    def message_sumary_domains_imported; "Disavowed Domains:" end
 
     def export_write(file)
       file.puts "# Domains"
@@ -36,36 +30,7 @@ module DisavowTool
       file.puts "# urls"
       file.puts @links.to_a
       puts "Writing #{@links.count} Disavowed URLS".blue if @verbose
-
     end
 
-    :private
-    def domain_or_url(line)
-      if( /^domain/.match(line))
-        return :domain
-      elsif( /^http/.match(line) )
-        return :url
-      else
-        raise "Error parsing Disavow file"
-      end
-    end
-
-    def is_url?(link)
-      if( link.match(/^http(s)?\:/) )
-        :url
-      else
-        :domain
-      end
-    end
-
-    def remove_domain_prefix(domain)
-      domain.gsub(/^domain\:/, '')
-    end
-    def remove_domain_prefix!(domain)
-      domain.gsub!(/^domain\:/, '')
-    end
-
-    def add_domain_prefix
-    end
   end
 end

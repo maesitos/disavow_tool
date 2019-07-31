@@ -34,10 +34,16 @@ module DisavowTool
                 raise "Command run with no whitelist option" if OPTIONS.whitelist == false
                 white_list.add_url url
                 self.delete_url url
+              when "W"
+                raise "Command run with no whitelist option" if OPTIONS.whitelist == false
+                domain = white_list.add_domain_from_url(url)
+                self.delete_url url
+                puts "Attempting to remove URLs with the domain #{domain} from imported links to stop anaylsing"
+                self.delete_urls_if_domains(domain)
               when "d"
                 domain = disavowed.add_domain_from_url(url)
                 self.delete_url url
-                puts "Attempting to remove URLs with the domain #{domain}"
+                puts "Attempting to remove URLs with the domain #{domain} from imported links to stop anaylsing"
                 self.delete_urls_if_domains(domain)
               when "u"
                 disavowed.add_url(url)
@@ -65,8 +71,8 @@ module DisavowTool
     :private
     def menu
       message = ""
-      message = "[w] to send to whitelist" if OPTIONS.whitelist
-      message += "[d] to send to Disavow as a domain [u] to send to Disavow as a URL [o] to open the URL."
+      message = "[w] whitelist url [W] whitelist the entire domain\n" if OPTIONS.whitelist
+      message += "[d] Disavow as domain [u] Disavow as a URL [o] to open the URL."
     end
 
     def open_browser_option(input, link)

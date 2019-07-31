@@ -1,9 +1,12 @@
 require_relative 'list'
 module DisavowTool
   class WhiteList < List
+    include DomainAndUrl
+
     def initialize(import_files=nil)
       raise "No whitelist option given" unless OPTIONS.whitelist
       import_files = import_files || OPTIONS.whitelist_files
+      p "Whitelist"
       super(import_files)
     end
 
@@ -11,26 +14,22 @@ module DisavowTool
       "+++ Inserting #{url.on_green} in Whitelist"
     end
 
-    def delete_url_message(url)
-      "--- Deleting #{url} from Whitelist"
+    def import_message(domain)
+      "Importing #{is_url?(domain).to_s} #{remove_domain_prefix(domain)} into White list"
     end
-
-    def import_message(link)
-      "Importing #{link} into White list"
+    def add_url_message(url)
+      "+++ Inserting #{is_url?(url).to_s} #{url} into White lis"
     end
     def message_sumary_imported; "Whitelist links imported" end
     def mensaje_sumary_before_export; "Whitelist before exporting" end
+
+    def message_sumary_links_imported; "Whitelisted URLs:" end
+    def message_sumary_domains_imported; "Whitelisted Domains:" end
 
     def export_write(file)
       file.puts "# Whitelist"
       file.puts self.to_a
       puts "Writing #{self.to_a.count} White links".blue if @verbose
-    end
-
-    private :restore
-    :protected
-    def clean_line!(link)
-      link.gsub!(/\"/, '')  # cleaning some bad links
     end
   end
 end

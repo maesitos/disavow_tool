@@ -11,6 +11,7 @@ require_relative 'disavow_tool/white_list.rb'
 require_relative 'disavow_tool/imported_links.rb'
 
 module DisavowTool
+  p WhiteList.ancestors
   def self.run
     puts "Importing new links".blue if OPTIONS.verbose
     imported_links = ImportedLinks.new
@@ -22,7 +23,10 @@ module DisavowTool
       puts "Importing Whitelist links".blue if OPTIONS.verbose
       white_list = WhiteList.new
       puts "Cleagning imported links already in whitelist".blue if OPTIONS.verbose
-      imported_links.remove_known_links(white_list)
+      imported_links.remove_known_links(white_list.links)
+      puts "Cleagning imported links with a domain existingin in whitelist".blue if OPTIONS.verbose
+      p white_list.domains
+      imported_links.remove_known_links_for_domain(white_list.domains)
     end
 
 

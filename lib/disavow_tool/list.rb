@@ -59,7 +59,7 @@ module DisavowTool
     end
 
     def mass_delete_urls(urls_to_delete)
-      puts mass_delete_message if @verbose
+      puts mass_delete_message if @verbose_hard
       urls_to_delete.each do |link|
         color_link = link.on_yellow
         puts delete_url_message(color_link).red if @verbose
