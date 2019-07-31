@@ -23,9 +23,9 @@ module DisavowTool
        @list.each do |url|
          puts "#{"*"*100}\n*"
          puts "* Analysing url: #{url.on_green}"
-         print "* Obtaining website's title...\r"
-         puts "* Website title: #{website_title(url)}".ljust(100)
-         puts "* URls with this same domain: #{urls_with_same_domain(url)}"
+         print "* "+ "Obtaining website's title...\r".red.blink
+         #puts "* Website title: #{website_title(url)}".ljust(100)
+         #puts "* URls with this same domain: #{urls_with_same_domain(url)}"
          puts "*\n#{"*"*100}\n*"
          puts menu()
          input = $stdin.getch

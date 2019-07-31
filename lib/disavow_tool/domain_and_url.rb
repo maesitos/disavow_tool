@@ -38,6 +38,16 @@ module DisavowTool
 			return domain
 		end
 
+		def export_write(file)
+			file.puts "# Domains"
+			add_domain_prefix
+			file.puts @domains.to_a
+			puts "Writing #{@domains.count} domains".blue if @verbose
+			file.puts "# urls"
+			file.puts @links.to_a
+			puts "Writing #{@links.count} URLS".blue if @verbose
+		end
+
 		def summary
 			puts message_sumary_links_imported.light_blue
 			super(@links, @original_links)
@@ -72,6 +82,11 @@ module DisavowTool
 		end
 
 		def add_domain_prefix
+			@domains.collect!{|domain| domain="domain:" + domain}
+		end
+
+		def total_elements
+			@domains.count + @links.count
 		end
 
 	end

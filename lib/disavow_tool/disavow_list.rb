@@ -24,12 +24,9 @@ module DisavowTool
     def message_sumary_domains_imported; "Disavowed Domains:" end
 
     def export_write(file)
-      file.puts "# Domains"
-      file.puts @domains.to_a
-      puts "Writing #{@domains.count} Disavowed domains".blue if @verbose
-      file.puts "# urls"
-      file.puts @links.to_a
-      puts "Writing #{@links.count} Disavowed URLS".blue if @verbose
+      file.puts "# Disavow"
+      super(file)
+      puts "Writing #{total_elements} elements into the Disavow file".blue if @verbose
     end
 
   end

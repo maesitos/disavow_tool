@@ -37,8 +37,10 @@ module DisavowTool
 
     def export_write(file)
       file.puts "# Whitelist"
-      file.puts self.to_a
-      puts "Writing #{self.to_a.count} White links".blue if @verbose
+      super(file)
+      puts "Writing #{total_elements} White links into whitelist".blue if @verbose
     end
+
+
   end
 end
