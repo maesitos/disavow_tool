@@ -1,40 +1,10 @@
 require_relative 'list'
+require_relative 'domain_and_url'
 require 'uri'
 
 module DisavowTool
   class DisavowList < List
-    attr_accessor :disavowed_links, :disavowed_domains
-    alias_method :links, :disavowed_links
-    alias_method :domains, :disavowed_domains
-
-    def initialize(import_files=nil)
-      import_files = import_files || OPTIONS.disavow_files
-      @disavowed_domains = Set.new
-      @disavowed_links = Set.new
-      super(import_files)
-    end
-
-    def clean_line!(line)
-      case domain_or_url(line)
-      when :domain
-        @disavowed_domains << remove_domain_prefix(line)
-      when :url
-        @disavowed_links << line
-      end
-    end
-
-    def finished_import_hook
-      @original_disavowed_domains = @disavowed_domains.clone
-      @original_disavowed_links = @disavowed_links.clone
-    end
-
-    def add_domain(domain)
-      super(domain, @disavowed_domains)
-    end
-
-    def add_url(url, list=nil)
-      super(url, @disavowed_links)
-    end
+    include DomainAndUrl
 
     def add_domain_from_url(url)
       domain = URI.parse(URI.escape(url)).host
@@ -54,18 +24,18 @@ module DisavowTool
 
     def summary
       puts "Disavowed URLs:".light_blue
-      super(@disavowed_links, @original_disavowed_links)
+      super(@links, @original_links)
       puts "Disavowed Domains:".light_blue
-      super(@disavowed_domains, @original_disavowed_domains)
+      super(@domains, @original_domains)
     end
 
     def export_write(file)
       file.puts "# Domains"
-      file.puts @disavowed_domains.to_a
-      puts "Writing #{@disavowed_domains.count} Disavowed domains".blue if @verbose
+      file.puts @domains.to_a
+      puts "Writing #{@domains.count} Disavowed domains".blue if @verbose
       file.puts "# urls"
-      file.puts @disavowed_links.to_a
-      puts "Writing #{@disavowed_links.count} Disavowed URLS".blue if @verbose
+      file.puts @links.to_a
+      puts "Writing #{@links.count} Disavowed URLS".blue if @verbose
 
     end
 
