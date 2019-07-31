@@ -67,10 +67,10 @@ module DisavowTool
 		end
 
 		def is_url?(link)
-			if( link.match(/^http(s)?\:/) )
-				:url
-			else
+			unless( link.match(/^http(s)?\:/) )
 				:domain
+			else
+				:url
 			end
 		end
 

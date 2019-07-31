@@ -15,7 +15,7 @@ module DisavowTool
       "Importing #{is_url?(domain).to_s} #{remove_domain_prefix(domain)} into Disavow list"
     end
     def add_url_message(url)
-      "+++ Inserting #{is_url?(url).to_s} #{url} in Disavow"
+      "+++ Inserting #{is_url?(url).to_s} #{url.on_yellow} in Disavow"
     end
     def message_sumary_imported; "Disavowed elements imported" end
     def mensaje_sumary_before_export; "Disavow elements before exporting" end

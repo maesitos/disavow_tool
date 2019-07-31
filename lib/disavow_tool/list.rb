@@ -46,8 +46,7 @@ module DisavowTool
     def add_url(url, list=nil)
       list = list || @list
       if list.add? url
-        color_url = url.on_yellow
-        puts add_url_message(color_url).blue if @verbose
+        puts add_url_message(url).blue if @verbose
       else
         puts "Not adding #{url}. Already in the list.".red if @verbose
       end

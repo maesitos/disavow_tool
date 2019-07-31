@@ -19,15 +19,11 @@ module DisavowTool
       import_list.delete_urls_if_domains(domain)
     end
 
-    def add_url_message(url)
-      "+++ Inserting #{url.on_green} in Whitelist"
-    end
-
-    def import_message(domain)
-      "Importing #{is_url?(domain).to_s} #{remove_domain_prefix(domain)} into White list"
+    def import_message(url)
+      "Importing #{is_url?(url).to_s} #{remove_domain_prefix(url)} into Whitelist"
     end
     def add_url_message(url)
-      "+++ Inserting #{is_url?(url).to_s} #{url} into White list"
+      "+++ Inserting #{is_url?(url).to_s} #{url.on_yellow} into Whitelist"
     end
     def message_sumary_imported; "Whitelist links imported" end
     def mensaje_sumary_before_export; "Whitelist before exporting" end
