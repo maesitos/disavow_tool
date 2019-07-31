@@ -13,6 +13,7 @@ module DisavowTool
       options.whitelist  = false
       options.verbose = false
       options.hardcore_verbose = false
+      options.network_requests = true
 
       opt_parser = OptionParser.new do |opts|
           opts.banner = "Usage: disavow.rb [options] --disavow FILE --import file_1,file_2,file_3 [--whitelist file1,file2,file3]"
@@ -36,6 +37,11 @@ module DisavowTool
           opts.on("-v", "--verbose", "Vervose mode") do
             options.verbose = true
           end
+
+          opts.on("-t", "--no-titles", "Don't request tittles from websites thus making the command faster") do
+            options.network_requests = false
+          end
+
           opts.on("-V", "--hardcore-vervose", "Print out even your mama") do
             options.hardcore_verbose = true
             options.verbose = true            # Hardcose verbose includes regular verbose

@@ -27,7 +27,7 @@ module DisavowTool
       "Importing #{is_url?(domain).to_s} #{remove_domain_prefix(domain)} into White list"
     end
     def add_url_message(url)
-      "+++ Inserting #{is_url?(url).to_s} #{url} into White lis"
+      "+++ Inserting #{is_url?(url).to_s} #{url} into White list"
     end
     def message_sumary_imported; "Whitelist links imported" end
     def mensaje_sumary_before_export; "Whitelist before exporting" end
