@@ -10,7 +10,7 @@ module DisavowTool
 
     def initialize(import_file=nil)
       @menu_options = {whitelist_domain: "W", whitelist_url: "w", whitelist_all_urls: "a",
-                      disavow_domain: "d", disavow_url: "u", open_in_browser: "o", exit: "."}
+                      disavow_domain: "D", disavow_url: "d", open_in_browser: "o", exit: "."}
       super(OPTIONS.import_files)
     end
 
@@ -37,7 +37,6 @@ module DisavowTool
          loop do
            puts menu()
            input = $stdin.getch
-           input = $stdin.getch if open_browser_option(input, url)
            case input
                 when @menu_options[:whitelist_url]
                   raise "Command run with no whitelist option" if OPTIONS.whitelist == false
@@ -64,14 +63,17 @@ module DisavowTool
                   disavowed.add_url(url)
                   self.delete_url url
 
+                when @menu_options[:open_in_browser]
+                  open_browser(url)
+
                 when @menu_options[:exit]
                   exit
 
                 else
-                  flag = false
                   puts "Incorrect option selected"
            end
-           break if @menu_options.value?(input)
+           next if input == @menu_options[:open_in_browser]
+           break if @menu_options.value?(input) unless input == @menu_options[:open_in_browser]
          end
        puts "\n\n#{@list.count} Remaining links to analize".blue
        end
@@ -106,13 +108,10 @@ module DisavowTool
 
     end
 
-    def open_browser_option(input, link)
-      if input == "o"
-          if Gem.win_platform? then system "start chrome #{URL.escape(link)}" else system "open -a safari #{link}" end
-          puts "Opening #{link}...".blue
-          puts menu
-          return true
-        end
+    def open_browser(link)
+      if Gem.win_platform? then system "start chrome #{URL.escape(link)}" else system "open -a safari #{link}" end
+      puts "Opening #{link}...".blue
+      return true
     end
 
     def website_title(url)
