@@ -6,7 +6,11 @@ require 'timeout'
 module DisavowTool
   class ImportedLinks < List
 
+
+
     def initialize(import_file=nil)
+      @menu_options = {whitelist_domain: "W", whitelist_url: "w", whitelist_all_urls: "a",
+                      disavow_domain: "d", disavow_url: "u", open_in_browser: "o", exit: "."}
       super(OPTIONS.import_files)
     end
 
@@ -29,31 +33,45 @@ module DisavowTool
          end
          puts "* URls with this same domain: #{urls_with_same_domain(url)}"
          puts "*\n#{"*"*100}"
-         puts menu()
-         input = $stdin.getch
-         input = $stdin.getch if open_browser_option(input, url)
-         case input
-              when "w"
-                raise "Command run with no whitelist option" if OPTIONS.whitelist == false
-                white_list.add_url url
-                self.delete_url url
-              when "W"
-                raise "Command run with no whitelist option" if OPTIONS.whitelist == false
-                domain = white_list.add_domain_from_url(url)
-                self.delete_url url
-                puts "Attempting to remove URLs with the domain #{domain} from imported links to stop anaylsing"
-                self.delete_urls_if_domains(domain)
-              when "a"
-                white_list.add_urls_with_same_domain_as url, self
-              when "d"
-                domain = disavowed.add_domain_from_url(url)
-                self.delete_url url
-                puts "Attempting to remove URLs with the domain #{domain} from imported links to stop anaylsing"
-                self.delete_urls_if_domains(domain)
-              when "u"
-                disavowed.add_url(url)
-                self.delete_url url
-              else raise "Invalid character."
+
+         loop do
+           puts menu()
+           input = $stdin.getch
+           input = $stdin.getch if open_browser_option(input, url)
+           case input
+                when @menu_options[:whitelist_url]
+                  raise "Command run with no whitelist option" if OPTIONS.whitelist == false
+                  white_list.add_url url
+                  self.delete_url url
+
+                when @menu_options[:whitelist_domain]
+                  raise "Command run with no whitelist option" if OPTIONS.whitelist == false
+                  domain = white_list.add_domain_from_url(url)
+                  self.delete_url url
+                  puts "Attempting to remove URLs with the domain #{domain} from imported links to stop anaylsing"
+                  self.delete_urls_if_domains(domain)
+
+                when @menu_options[:whitelist_all_urls]
+                  white_list.add_urls_with_same_domain_as url, self
+
+                when @menu_options[:disavow_domain]
+                  domain = disavowed.add_domain_from_url(url)
+                  self.delete_url url
+                  puts "Attempting to remove URLs with the domain #{domain} from imported links to stop anaylsing"
+                  self.delete_urls_if_domains(domain)
+
+                when @menu_options[:disavow_url]
+                  disavowed.add_url(url)
+                  self.delete_url url
+
+                when @menu_options[:exit]
+                  exit
+
+                else
+                  flag = false
+                  puts "Incorrect option selected"
+           end
+           break if @menu_options.value?(input)
          end
        puts "\n\n#{@list.count} Remaining links to analize".blue
        end
@@ -76,8 +94,16 @@ module DisavowTool
     :private
     def menu
       message = ""
-      message = "[w] Whitelist url [W] Whitelist the entire domain [a] whitelist as url All urls with this domain\n" if OPTIONS.whitelist
-      message += "[d] Disavow as domain [u] Disavow as a URL [o] to open the URL."
+      if OPTIONS.whitelist
+        message = "[#{@menu_options[:whitelist_url]}] Whitelist url "\
+                  "[#{@menu_options[:whitelist_domain]}] Whitelist the entire domain "\
+                  "[#{@menu_options[:whitelist_all_urls]}] whitelist as url All urls with this domain\n"
+      end
+      message += "[#{@menu_options[:disavow_domain]}] Disavow as domain "\
+                 "[#{@menu_options[:disavow_url]}] Disavow as a URL\n"\
+                 "[#{@menu_options[:open_in_browser]}] to open the URL "\
+                 "[#{@menu_options[:exit]}] to exit"
+
     end
 
     def open_browser_option(input, link)
