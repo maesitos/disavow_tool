@@ -108,7 +108,7 @@ module DisavowTool
 
     def open_browser_option(input, link)
       if input == "o"
-          if Gem.win_platform? then system "start chrome #{link}" else system "open -a safari #{link}" end
+          if Gem.win_platform? then system "start chrome #{URL.escape(link)}" else system "open -a safari #{link}" end
           puts "Opening #{link}...".blue
           puts menu
           return true
