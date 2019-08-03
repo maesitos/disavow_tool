@@ -1,4 +1,5 @@
 require 'set'
+require 'fileutils'
 
 module DisavowTool
   class List
@@ -112,6 +113,7 @@ module DisavowTool
       now = Time.now.strftime("%Y%m%d%H")
       file_name = self.class.to_s.underscore + "_" + now
       export_file = export_file || EXPORT_PATH + file_name
+      FileUtils.mkdir_p File.dirname(export_file)
       file = File.new(export_file, "w")
       file.puts "# Exporting #{self.class.to_s.underscore} #{ now }"
       export_write(file)
