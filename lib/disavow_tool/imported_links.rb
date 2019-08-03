@@ -97,12 +97,12 @@ module DisavowTool
     def menu
       message = ""
       if OPTIONS.whitelist
-        message = "[#{@menu_options[:whitelist_url]}] Whitelist url "\
-                  "[#{@menu_options[:whitelist_domain]}] Whitelist the entire domain "\
+        message = "[#{@menu_options[:whitelist_domain]}] Whitelist as domain "\
+                  "[#{@menu_options[:whitelist_url]}] Whitelist URL "\
                   "[#{@menu_options[:whitelist_all_urls]}] whitelist as url All urls with this domain\n"
       end
       message += "[#{@menu_options[:disavow_domain]}] Disavow as domain "\
-                 "[#{@menu_options[:disavow_url]}] Disavow as a URL\n"\
+                 "[#{@menu_options[:disavow_url]}] Disavow as URL\n"\
                  "[#{@menu_options[:open_in_browser]}] to open the URL "\
                  "[#{@menu_options[:exit]}] to exit"
 
