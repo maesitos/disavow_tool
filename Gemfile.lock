@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    disavow_tool (0.3.3s)
+    disavow_tool (0.3.3)
       activesupport
       colorize
       nokogiri
