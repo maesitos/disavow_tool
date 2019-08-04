@@ -11,7 +11,7 @@ module DisavowTool
       @list = Set.new
       @verbose = OPTIONS.verbose
       @verbose_hard = OPTIONS.hardcore_verbose
-      import import_files if @verbose
+      import import_files
       @original_list = @list.clone
     end
 
