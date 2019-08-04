@@ -9,6 +9,7 @@ module DisavowTool
 
     def initialize(import_files)
       @list = Set.new
+      @list_files_imported = []
       @verbose = OPTIONS.verbose
       @verbose_hard = OPTIONS.hardcore_verbose
       import import_files
@@ -18,6 +19,7 @@ module DisavowTool
     def import(import_files)
       import_files = [import_files] if import_files.class != Array
       import_files.each do |file|
+        @list_files_imported << file
         puts "Importing file: #{file}"
         File.readlines(file).each do |line|
           line.chomp!
@@ -89,6 +91,9 @@ module DisavowTool
     def summary(list=nil, original_list=nil)
       list = list || @list
       original_list = original_list || @original_list
+      puts "Files imported:"
+      puts @list_files_imported
+
       puts "#{message_sumary_imported} #{original_list.count}".blue
       puts "#{mensaje_sumary_before_export} #{list.count}".blue
 
