@@ -16,7 +16,7 @@ module DisavowTool
       options.network_requests = true
 
       opt_parser = OptionParser.new do |opts|
-          opts.banner = "Usage: disavow.rb [options] --disavow FILE --import file_1,file_2,file_3 [--whitelist file1,file2,file3]"
+          opts.banner = "Usage: disavow_tool [options] --disavow file_1,file_2,file_3 --import file_1,file_2,file_3 [--whitelist file1,file2,file3]"
           opts.separator ""
           opts.separator "Requited options:"
           opts.on("-d","--disavow file_1,file_2", Array, "Disavow files as exported from Google Search Console") do |file|
