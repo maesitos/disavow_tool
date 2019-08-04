@@ -42,6 +42,7 @@ After the analysis is complete, DisavowTool will export a Disavow file ready to 
 
 ## Disavow files format
 The format will be the same as [defined by Google](https://support.google.com/webmasters/answer/2648487?hl=en)
+
     # Comments
     # Domains
     domain:scammysite.com
@@ -52,6 +53,7 @@ The format will be the same as [defined by Google](https://support.google.com/we
 
 ## Whitelist files format
 The format will be the same as [defined by Google](https://support.google.com/webmasters/answer/2648487?hl=en)
+
     # Comments
     # Domains
     domain:most_popular_site.com
